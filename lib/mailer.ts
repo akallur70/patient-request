@@ -93,6 +93,7 @@ export async function sendAlertEmail({
     </div>
   `;
 
+  console.log('sendAlertEmail recipients:', JSON.stringify(recipients));
   await transporter.sendMail({
     from: `"SVH Apps" <${process.env.ALERT_EMAIL_FROM}>`,
     to: recipients.join(', '),

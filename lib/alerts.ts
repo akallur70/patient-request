@@ -16,6 +16,7 @@ export async function sendAlerts(payload: AlertPayload) {
   if (!emailEnabled && !whatsappEnabled) return;
 
   const { emails, whatsapp } = await getContacts(payload.location, payload.department);
+  console.log('getContacts result:', JSON.stringify({ emails, whatsapp }));
 
   const tasks: Promise<void>[] = [];
 
