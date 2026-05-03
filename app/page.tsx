@@ -75,12 +75,14 @@ function RequestForm() {
   return (
     <div className="page">
       <div className="header">
-        <img src="/logo.svg" alt="Saishree Vitalife" className="header-logo" />
-        <div className="header-location">{HOSPITAL_NAMES[hospital] ?? hospital}</div>
-        <div className="header-room">
-          <div className="header-room-label">Room</div>
-          <div className="header-room-number">{room}</div>
+        <div className="header-top">
+          <img src="/logo.svg" alt="Saishree Vitalife" className="header-logo" />
+          <div className="header-room">
+            <div className="header-room-label">Room</div>
+            <div className="header-room-number">{room}</div>
+          </div>
         </div>
+        <div className="header-location">{HOSPITAL_NAMES[hospital] ?? hospital}</div>
       </div>
 
       {locationSub && (

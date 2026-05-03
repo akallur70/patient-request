@@ -25,8 +25,8 @@ html, body {
 
 .header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 28px;
   padding: 16px 18px;
   background: #fff;
@@ -34,8 +34,14 @@ html, body {
   box-shadow: 0 1px 6px rgba(0,0,0,0.08);
 }
 
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .header-logo {
-  height: 36px;
+  height: 27px;
   width: auto;
   flex-shrink: 0;
 }
@@ -45,28 +51,29 @@ html, body {
   font-weight: 800;
   color: var(--blue);
   text-align: center;
-  flex: 1;
 }
 
 .header-room {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: center;
 }
 
 .header-room-label {
-  font-size: 0.75rem;
+  font-size: 0.6rem;
   font-weight: 600;
   color: #888;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  line-height: 1.2;
 }
 
 .header-room-number {
-  font-size: 2rem;
+  font-size: 1.1rem;
   font-weight: 900;
   color: var(--blue);
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .location-sub {
