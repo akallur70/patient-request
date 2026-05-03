@@ -89,7 +89,10 @@ function RequestForm() {
         <div className="location-sub">{locationSub}</div>
       )}
 
-      <div className="section-title">What do you need help with?</div>
+      <div className="section-title">
+        What do you need help with?
+        <div className="section-title-mr">आपल्याला कशाची मदत हवी आहे?</div>
+      </div>
 
       <div className="dept-grid">
         {DEPARTMENTS.map(d => (
@@ -111,7 +114,7 @@ function RequestForm() {
 
       <textarea
         maxLength={200}
-        placeholder="Additional details (optional)"
+        placeholder="Additional details (optional) / अतिरिक्त माहिती (पर्यायी)"
         value={notes}
         onChange={e => setNotes(e.target.value)}
       />

@@ -48,7 +48,7 @@ html, body {
 }
 
 .header-location {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--blue);
 }
@@ -68,7 +68,7 @@ html, body {
 }
 
 .header-room-number {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--blue);
   line-height: 1.2;
@@ -90,6 +90,13 @@ html, body {
   color: #333;
   margin-bottom: 14px;
   text-align: center;
+}
+
+.section-title-mr {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #666;
+  margin-top: 3px;
 }
 
 .dept-grid {
