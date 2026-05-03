@@ -1,26 +1,155 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --blue: #1a73e8;
+  --green: #34a853;
+  --orange: #f29900;
+  --red: #ea4335;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fafafa;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.page {
+  max-width: 480px;
+  margin: auto;
+  padding: 24px 16px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.room-badge {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.room-badge .label {
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.room-badge .number {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--blue);
+  line-height: 1.1;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.dept-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.dept-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  border-radius: 16px;
+  border: 2.5px solid #e0e0e0;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: left;
+}
+
+.dept-btn .icon { font-size: 2rem; flex-shrink: 0; }
+.dept-btn .text { font-size: 1.15rem; font-weight: 700; color: #333; }
+
+.dept-btn.selected-Nursing  { border-color: var(--blue);   background: #e8f0fe; }
+.dept-btn.selected-Nursing .text  { color: var(--blue); }
+
+.dept-btn.selected-Housekeeping { border-color: var(--green);  background: #e8f5e9; }
+.dept-btn.selected-Housekeeping .text { color: var(--green); }
+
+.dept-btn.selected-Maintenance  { border-color: var(--orange); background: #fff8e1; }
+.dept-btn.selected-Maintenance .text  { color: #e65100; }
+
+textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  min-height: 100px;
+  resize: vertical;
+  margin-bottom: 6px;
+  background: #fff;
+}
+
+textarea:focus { outline: none; border-color: var(--blue); }
+
+.char-count {
+  text-align: right;
+  font-size: 0.75rem;
+  color: #888;
+  margin-bottom: 24px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 18px;
+  border-radius: 16px;
+  border: none;
+  background: var(--blue);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.thankyou {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  text-align: center;
+  padding: 24px;
+  gap: 12px;
+}
+
+.thankyou .icon { font-size: 4rem; }
+.thankyou .msg  { font-size: 1.3rem; font-weight: 800; color: var(--blue); }
+.thankyou .sub  { font-size: 0.95rem; color: #888; }
+
+.error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 24px;
+  text-align: center;
+  color: var(--red);
+  font-weight: 700;
+  font-size: 1rem;
 }

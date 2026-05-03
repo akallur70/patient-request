@@ -1,65 +1,106 @@
-import Image from "next/image";
+'use client';
+
+import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import Image from 'next/image';
+
+type Dept = 'Nursing' | 'Housekeeping' | 'Maintenance';
+
+const DEPARTMENTS: { id: Dept; icon: string; label: string }[] = [
+  { id: 'Nursing',      icon: '👩‍⚕️', label: 'Nursing' },
+  { id: 'Housekeeping', icon: '🧹', label: 'Housekeeping' },
+  { id: 'Maintenance',  icon: '🔧', label: 'Maintenance' },
+];
+
+function RequestForm() {
+  const params = useSearchParams();
+  const room = params.get('room');
+
+  const [dept, setDept] = useState<Dept | null>(null);
+  const [notes, setNotes] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState(false);
+
+  if (!room) {
+    return (
+      <div className="error-page">
+        Invalid QR code — no room number found.
+      </div>
+    );
+  }
+
+  if (done) {
+    return (
+      <div className="thankyou">
+        <div className="icon">✅</div>
+        <div className="msg">Request Sent!</div>
+        <div className="sub">Staff have been notified. We will attend to you shortly.</div>
+      </div>
+    );
+  }
+
+  const handleSubmit = async () => {
+    if (!dept) return;
+    setSubmitting(true);
+    await fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ room, department: dept, notes: notes.trim() || null }),
+    });
+    setSubmitting(false);
+    setDone(true);
+  };
+
+  return (
+    <div className="page">
+      <div className="header">
+        <Image src="/logo.svg" alt="Sai Shree Vita Life" width={200} height={60} style={{ objectFit: 'contain' }} />
+      </div>
+
+      <div className="room-badge">
+        <div className="label">Room</div>
+        <div className="number">{room}</div>
+      </div>
+
+      <div className="section-title">What do you need help with?</div>
+
+      <div className="dept-grid">
+        {DEPARTMENTS.map(d => (
+          <div
+            key={d.id}
+            className={`dept-btn${dept === d.id ? ` selected-${d.id}` : ''}`}
+            onClick={() => setDept(d.id)}
+          >
+            <span className="icon">{d.icon}</span>
+            <span className="text">{d.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <textarea
+        maxLength={200}
+        placeholder="Additional details (optional)"
+        value={notes}
+        onChange={e => setNotes(e.target.value)}
+      />
+      <div className="char-count">{notes.length} / 200</div>
+
+      <button
+        className="submit-btn"
+        disabled={!dept || submitting}
+        onClick={handleSubmit}
+      >
+        {submitting ? 'Sending...' : 'Submit Request'}
+      </button>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <Suspense>
+      <RequestForm />
+    </Suspense>
   );
 }
