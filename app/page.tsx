@@ -12,10 +12,10 @@ const HOSPITAL_NAMES: Record<string, string> = {
   SVHB: 'Borse',
 };
 
-const DEPARTMENTS: { id: Dept; icon: string; label: string }[] = [
-  { id: 'Nursing',      icon: '👩‍⚕️', label: 'Nursing' },
-  { id: 'Housekeeping', icon: '🧹', label: 'Housekeeping' },
-  { id: 'Maintenance',  icon: '🔧', label: 'Maintenance' },
+const DEPARTMENTS: { id: Dept; icon: string; label: string; sub: string; labelMr: string; subMr: string }[] = [
+  { id: 'Nursing',      icon: '👩‍⚕️', label: 'Nursing',      sub: 'Medicine, Vitals, Checkup etc.',  labelMr: 'नर्सिंग',       subMr: 'औषध, नाडी-ताप, तपासणी इ.' },
+  { id: 'Housekeeping', icon: '🧹',   label: 'Room Hygiene', sub: 'Linen, Cleaning & Toilet etc.',   labelMr: 'खोली स्वच्छता', subMr: 'चादर, साफसफाई आणि शौचालय इ.' },
+  { id: 'Maintenance',  icon: '🔧',   label: 'Room Comfort', sub: 'TV, AC, Fan & Bed Remote etc.',   labelMr: 'खोली सुविधा',   subMr: 'टीव्ही, एसी, पंखा आणि बेड रिमोट इ.' },
 ];
 
 function RequestForm() {
@@ -25,10 +25,10 @@ function RequestForm() {
   const wing     = params.get('wing');
   const room     = params.get('room');
 
-  const [dept, setDept]           = useState<Dept | null>(null);
-  const [notes, setNotes]         = useState('');
+  const [dept, setDept]             = useState<Dept | null>(null);
+  const [notes, setNotes]           = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone]           = useState(false);
+  const [done, setDone]             = useState(false);
 
   if (!hospital || !room) {
     return (
@@ -75,14 +75,14 @@ function RequestForm() {
   return (
     <div className="page">
       <div className="header">
-        <div className="header-top">
-          <img src="/logo.svg" alt="Saishree Vitalife" className="header-logo" />
+        <img src="/logo.svg" alt="Saishree Vitalife" className="header-logo" />
+        <div className="header-info">
+          <div className="header-location">{HOSPITAL_NAMES[hospital] ?? hospital}</div>
           <div className="header-room">
             <div className="header-room-label">Room</div>
             <div className="header-room-number">{room}</div>
           </div>
         </div>
-        <div className="header-location">{HOSPITAL_NAMES[hospital] ?? hospital}</div>
       </div>
 
       {locationSub && (
@@ -98,8 +98,13 @@ function RequestForm() {
             className={`dept-btn${dept === d.id ? ` selected-${d.id}` : ''}`}
             onClick={() => setDept(d.id)}
           >
-            <span className="icon">{d.icon}</span>
-            <span className="text">{d.label}</span>
+            <span className="dept-icon">{d.icon}</span>
+            <div className="dept-text">
+              <div className="dept-label">{d.label}</div>
+              <div className="dept-sub">{d.sub}</div>
+              <div className="dept-label-mr">{d.labelMr}</div>
+              <div className="dept-sub-mr">{d.subMr}</div>
+            </div>
           </div>
         ))}
       </div>
@@ -117,7 +122,12 @@ function RequestForm() {
         disabled={!dept || submitting}
         onClick={handleSubmit}
       >
-        {submitting ? 'Sending...' : 'Submit Request'}
+        {submitting ? 'Sending...' : (
+          <>
+            <span>Submit Request</span>
+            <span className="submit-btn-mr">विनंती सादर करा</span>
+          </>
+        )}
       </button>
     </div>
   );
