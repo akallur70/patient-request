@@ -18,7 +18,7 @@ function buildUrl(base: string, hospital: string, floor: string, wing: string, r
   const p = new URLSearchParams({ hospital, room });
   if (floor.trim()) p.set('floor', floor.trim());
   if (wing.trim())  p.set('wing',  wing.trim());
-  return `${base}/request?${p.toString()}`;
+  return `${base}/?${p.toString()}`;
 }
 
 function expandRooms(raw: string): string[] {
