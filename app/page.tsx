@@ -14,8 +14,8 @@ const HOSPITAL_NAMES: Record<string, string> = {
 
 const DEPARTMENTS: { id: Dept; icon: string; label: string; sub: string; labelMr: string; subMr: string }[] = [
   { id: 'Nursing',      icon: '👩‍⚕️', label: 'Nursing',      sub: 'Medicine, Vitals, Checkup etc.',  labelMr: 'नर्सिंग',       subMr: 'औषध, नाडी-ताप, तपासणी इ.' },
-  { id: 'Housekeeping', icon: '🧹',   label: 'Room Hygiene', sub: 'Linen, Cleaning & Toilet etc.',   labelMr: 'खोली स्वच्छता', subMr: 'चादर, साफसफाई आणि शौचालय इ.' },
-  { id: 'Maintenance',  icon: '🔧',   label: 'Room Comfort', sub: 'TV, AC, Fan & Bed Remote etc.',   labelMr: 'खोली सुविधा',   subMr: 'टीव्ही, एसी, पंखा आणि बेड रिमोट इ.' },
+  { id: 'Housekeeping', icon: '🧹',   label: 'Room Hygiene', sub: 'Linen, Cleaning, Toilet etc.',   labelMr: 'खोली स्वच्छता', subMr: 'चादर, साफसफाई, शौचालय इ.' },
+  { id: 'Maintenance',  icon: '🔧',   label: 'Room Comfort', sub: 'TV, AC, Fan, Bed Remote etc.',   labelMr: 'खोली सुविधा',   subMr: 'टीव्ही, एसी, पंखा, बेड रिमोट इ.' },
 ];
 
 function RequestForm() {
