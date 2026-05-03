@@ -6,6 +6,12 @@ import { useState } from 'react';
 
 type Dept = 'Nursing' | 'Housekeeping' | 'Maintenance';
 
+const HOSPITAL_NAMES: Record<string, string> = {
+  SVHW: 'Wakad',
+  SVHA: 'Aundh',
+  SVHB: 'Borse',
+};
+
 const DEPARTMENTS: { id: Dept; icon: string; label: string }[] = [
   { id: 'Nursing',      icon: '👩‍⚕️', label: 'Nursing' },
   { id: 'Housekeeping', icon: '🧹', label: 'Housekeeping' },
@@ -69,11 +75,8 @@ function RequestForm() {
   return (
     <div className="page">
       <div className="header">
-        <div className="brand">
-          <div className="brand-name">Saishree Vitalife</div>
-          <div className="brand-sub">Hospital</div>
-        </div>
-        <div className="header-divider" />
+        <img src="/logo.svg" alt="Saishree Vitalife" className="header-logo" />
+        <div className="header-location">{HOSPITAL_NAMES[hospital] ?? hospital}</div>
         <div className="header-room">
           <div className="header-room-label">Room</div>
           <div className="header-room-number">{room}</div>
