@@ -25,29 +25,70 @@ html, body {
 
 .header {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-bottom: 24px;
-}
-
-.room-badge {
-  text-align: center;
+  justify-content: space-between;
   margin-bottom: 28px;
+  padding: 16px 18px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
 }
 
-.room-badge .label {
+.brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--blue);
+  line-height: 1.2;
+}
+
+.brand-sub {
   font-size: 0.85rem;
+  font-weight: 600;
+  color: #888;
+  letter-spacing: 0.04em;
+}
+
+.header-divider {
+  width: 1.5px;
+  height: 44px;
+  background: #e0e0e0;
+  flex-shrink: 0;
+}
+
+.header-room {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.header-room-label {
+  font-size: 0.75rem;
+  font-weight: 600;
   color: #888;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-weight: 600;
 }
 
-.room-badge .number {
-  font-size: 2.8rem;
+.header-room-number {
+  font-size: 2rem;
   font-weight: 900;
   color: var(--blue);
   line-height: 1.1;
+}
+
+.location-sub {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #888;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-top: -18px;
+  margin-bottom: 20px;
 }
 
 .section-title {

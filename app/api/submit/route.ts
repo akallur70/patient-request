@@ -5,22 +5,27 @@ import { sendAlerts } from '../../../lib/alerts';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { room, department, notes } = body;
+    const { hospital, floor, wing, room, department, notes } = body;
 
-    if (!room || !department) {
+    if (!hospital || !room || !department) {
       return NextResponse.json(
-        { success: false, error: 'room and department are required' },
+        { success: false, error: 'hospital, room and department are required' },
         { status: 400 }
       );
     }
 
     const { error } = await supabase
       .from('patient_requests')
-      .insert([{ room, department, notes: notes || null }]);
+      .insert([{ hospital, floor: floor || null, wing: wing || null, room, department, notes: notes || null }]);
 
     if (error) throw error;
 
-    await sendAlerts({ room, department, notes: notes || null });
+    await sendAlerts({
+      location: { hospital, floor: floor || null, wing: wing || null },
+      room,
+      department,
+      notes: notes || null,
+    });
 
     return NextResponse.json({ success: true });
 

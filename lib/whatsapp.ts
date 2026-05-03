@@ -1,4 +1,5 @@
 import twilio from 'twilio';
+import { Location } from './routing';
 
 const client = twilio(
   process.env.TWILIO_ACCOUNT_SID,
@@ -6,38 +7,37 @@ const client = twilio(
 );
 
 export async function sendWhatsAppAlert({
+  location,
   room,
   department,
   notes,
+  recipients,
 }: {
+  location: Location;
   room: string;
   department: string;
   notes: string | null;
+  recipients: string[];
 }) {
-  // Per-department numbers, falls back to global WHATSAPP_ALERT_NUMBERS
-  const numbersEnv =
-    process.env[`${department.toUpperCase()}_WHATSAPP_NUMBERS`] ||
-    process.env.WHATSAPP_ALERT_NUMBERS ||
-    '';
-
-  const numbers = numbersEnv.split(',').map(n => n.trim()).filter(Boolean);
+  const locationLine = [
+    location.hospital,
+    location.floor ? `Floor ${location.floor}` : null,
+    location.wing  ? `Wing ${location.wing}`   : null,
+  ].filter(Boolean).join(' · ');
 
   const body = [
     `🔔 Patient Request`,
+    `Location: ${locationLine}`,
     `Room: ${room}`,
     `Department: ${department}`,
     notes ? `Note: ${notes}` : null,
     `Time: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`,
   ].filter(Boolean).join('\n');
 
-  const promises = numbers.map(to =>
-    client.messages.create({
-      from: process.env.TWILIO_WHATSAPP_FROM,
-      to,
-      body
-    })
-    .then(msg => console.log('WhatsApp sent:', msg.sid))
-    .catch(err => console.error('WhatsApp error:', err.message))
+  const promises = recipients.map(to =>
+    client.messages.create({ from: process.env.TWILIO_WHATSAPP_FROM, to, body })
+      .then(msg => console.log('WhatsApp sent:', msg.sid))
+      .catch(err => console.error('WhatsApp error:', err.message))
   );
 
   await Promise.all(promises);

@@ -3,7 +3,6 @@
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import Image from 'next/image';
 
 type Dept = 'Nursing' | 'Housekeeping' | 'Maintenance';
 
@@ -14,18 +13,21 @@ const DEPARTMENTS: { id: Dept; icon: string; label: string }[] = [
 ];
 
 function RequestForm() {
-  const params = useSearchParams();
-  const room = params.get('room');
+  const params   = useSearchParams();
+  const hospital = params.get('hospital');
+  const floor    = params.get('floor');
+  const wing     = params.get('wing');
+  const room     = params.get('room');
 
-  const [dept, setDept] = useState<Dept | null>(null);
-  const [notes, setNotes] = useState('');
+  const [dept, setDept]           = useState<Dept | null>(null);
+  const [notes, setNotes]         = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState(false);
+  const [done, setDone]           = useState(false);
 
-  if (!room) {
+  if (!hospital || !room) {
     return (
       <div className="error-page">
-        Invalid QR code — no room number found.
+        Invalid QR code — hospital or room number missing.
       </div>
     );
   }
@@ -46,22 +48,41 @@ function RequestForm() {
     await fetch('/api/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ room, department: dept, notes: notes.trim() || null }),
+      body: JSON.stringify({
+        hospital,
+        floor:      floor  || null,
+        wing:       wing   || null,
+        room,
+        department: dept,
+        notes:      notes.trim() || null,
+      }),
     });
     setSubmitting(false);
     setDone(true);
   };
 
+  const locationSub = [
+    floor ? `Floor ${floor}` : null,
+    wing  ? `Wing ${wing}`   : null,
+  ].filter(Boolean).join(' · ');
+
   return (
     <div className="page">
       <div className="header">
-        <Image src="/logo.svg" alt="Sai Shree Vita Life" width={200} height={60} style={{ objectFit: 'contain' }} />
+        <div className="brand">
+          <div className="brand-name">Saishree Vitalife</div>
+          <div className="brand-sub">Hospital</div>
+        </div>
+        <div className="header-divider" />
+        <div className="header-room">
+          <div className="header-room-label">Room</div>
+          <div className="header-room-number">{room}</div>
+        </div>
       </div>
 
-      <div className="room-badge">
-        <div className="label">Room</div>
-        <div className="number">{room}</div>
-      </div>
+      {locationSub && (
+        <div className="location-sub">{locationSub}</div>
+      )}
 
       <div className="section-title">What do you need help with?</div>
 
