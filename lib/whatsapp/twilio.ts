@@ -1,24 +1,12 @@
 import twilio from 'twilio';
-import { Location } from './routing';
+import { SendParams } from './types';
 
 const client = twilio(
   process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
 );
 
-export async function sendWhatsAppAlert({
-  location,
-  room,
-  department,
-  notes,
-  recipients,
-}: {
-  location: Location;
-  room: string;
-  department: string;
-  notes: string | null;
-  recipients: string[];
-}) {
+export async function send({ location, room, department, notes, recipients }: SendParams): Promise<void> {
   const locationLine = [
     location.hospital,
     location.floor ? `Floor ${location.floor}` : null,
