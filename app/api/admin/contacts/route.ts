@@ -15,7 +15,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { hospital, floor, wing, department, type, contact } = body;
+  const { hospital, floor, wing, department, type, contact, name } = body;
 
   if (!hospital || !department || !type || !contact) {
     return NextResponse.json({ error: 'hospital, department, type and contact are required' }, { status: 400 });
@@ -30,6 +30,7 @@ export async function POST(request: Request) {
       department,
       type,
       contact:    contact.trim(),
+      name:       name?.trim()    || null,
       active:     true,
     }])
     .select()

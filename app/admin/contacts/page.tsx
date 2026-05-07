@@ -20,10 +20,11 @@ interface Contact {
   department: string;
   type: string;
   contact: string;
+  name: string | null;
   active: boolean;
 }
 
-const empty = { hospital: 'SVHW', floor: '', wing: '', department: 'Nursing', type: 'email', contact: '' };
+const empty = { hospital: 'SVHW', floor: '', wing: '', department: 'Nursing', type: 'email', contact: '', name: '' };
 
 export default function ContactsAdmin() {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -130,6 +131,16 @@ export default function ContactsAdmin() {
               onChange={e => setForm(f => ({ ...f, contact: e.target.value }))}
             />
           </label>
+
+          <label style={labelStyle}>
+            <div>Staff Name <span style={{ color: '#aaa', fontWeight: 400 }}>(optional)</span></div>
+            <input
+              style={inputStyle}
+              placeholder="e.g. Priya Desai"
+              value={form.name}
+              onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+            />
+          </label>
         </div>
 
         {form.type === 'whatsapp' && (
@@ -152,7 +163,7 @@ export default function ContactsAdmin() {
         <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: 12, overflow: 'hidden', border: '1px solid #e0e0e0' }}>
           <thead>
             <tr style={{ background: '#f5f5f5' }}>
-              {['Hospital', 'Floor', 'Wing', 'Department', 'Type', 'Contact', 'Active', ''].map(h => (
+              {['Hospital', 'Floor', 'Wing', 'Department', 'Type', 'Contact', 'Name', 'Active', ''].map(h => (
                 <th key={h} style={thStyle}>{h}</th>
               ))}
             </tr>
@@ -177,6 +188,7 @@ export default function ContactsAdmin() {
                   </span>
                 </td>
                 <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 13 }}>{c.contact}</td>
+                <td style={tdStyle}>{c.name || <span style={{ color: '#ccc' }}>—</span>}</td>
                 <td style={tdStyle}>
                   <button
                     onClick={() => handleToggle(c)}

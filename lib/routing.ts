@@ -31,7 +31,7 @@ export async function getContacts(
 
   const { data, error } = await supabase
     .from('routing_contacts')
-    .select('type, contact')
+    .select('type, contact, name')
     .eq('hospital', hospital)
     .eq('department', department)
     .eq('active', true)
