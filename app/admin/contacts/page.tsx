@@ -98,12 +98,12 @@ export default function ContactsAdmin() {
           </label>
 
           <label style={labelStyle}>
-            Floor <span style={{ color: '#aaa', fontWeight: 400 }}>(optional)</span>
+            <div>Floor <span style={{ color: '#aaa', fontWeight: 400 }}>(optional)</span></div>
             <input style={inputStyle} placeholder="e.g. 2" value={form.floor} onChange={e => setForm(f => ({ ...f, floor: e.target.value }))} />
           </label>
 
           <label style={labelStyle}>
-            Wing <span style={{ color: '#aaa', fontWeight: 400 }}>(optional)</span>
+            <div>Wing <span style={{ color: '#aaa', fontWeight: 400 }}>(optional)</span></div>
             <input style={inputStyle} placeholder="e.g. A" value={form.wing} onChange={e => setForm(f => ({ ...f, wing: e.target.value }))} />
           </label>
 
