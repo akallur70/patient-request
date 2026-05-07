@@ -155,6 +155,45 @@ textarea {
 
 textarea:focus { outline: none; border-color: var(--blue); }
 
+.notes-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.notes-wrapper textarea {
+  width: 100%;
+  padding-bottom: 44px;
+}
+
+.mic-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--blue);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
+.mic-btn.recording {
+  background: var(--red);
+  opacity: 1;
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(234,67,53,0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(234,67,53,0); }
+  100% { box-shadow: 0 0 0 0 rgba(234,67,53,0); }
+}
+
 .char-count {
   text-align: right;
   font-size: 0.75rem;

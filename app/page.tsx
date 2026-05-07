@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 type Dept = 'Nursing' | 'Housekeeping' | 'Maintenance';
 
@@ -29,6 +29,47 @@ function RequestForm() {
   const [notes, setNotes]           = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone]             = useState(false);
+  const [listening, setListening]   = useState(false);
+  const [voiceOK, setVoiceOK]       = useState(false);
+  const recognitionRef              = useRef<any>(null);
+
+  useEffect(() => {
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    setVoiceOK(!!SR);
+  }, []);
+
+  const toggleVoice = () => {
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) return;
+
+    if (listening) {
+      recognitionRef.current?.stop();
+      setListening(false);
+      return;
+    }
+
+    const rec = new SR();
+    rec.lang             = 'en-IN';
+    rec.continuous       = true;
+    rec.interimResults   = false;
+
+    rec.onresult = (e: any) => {
+      const transcript = Array.from(e.results as any[])
+        .map((r: any) => r[0].transcript)
+        .join(' ');
+      setNotes(prev => {
+        const joined = prev.trim() ? prev.trimEnd() + ' ' + transcript : transcript;
+        return joined.slice(0, 200);
+      });
+    };
+
+    rec.onend   = () => setListening(false);
+    rec.onerror = () => setListening(false);
+
+    rec.start();
+    recognitionRef.current = rec;
+    setListening(true);
+  };
 
   if (!hospital || !room) {
     return (
@@ -112,12 +153,24 @@ function RequestForm() {
         ))}
       </div>
 
-      <textarea
-        maxLength={200}
-        placeholder="Additional details (optional) / अतिरिक्त माहिती (पर्यायी)"
-        value={notes}
-        onChange={e => setNotes(e.target.value)}
-      />
+      <div className="notes-wrapper">
+        <textarea
+          maxLength={200}
+          placeholder="Additional details (optional) / अतिरिक्त माहिती (पर्यायी)"
+          value={notes}
+          onChange={e => setNotes(e.target.value)}
+        />
+        {voiceOK && (
+          <button
+            type="button"
+            className={`mic-btn${listening ? ' recording' : ''}`}
+            onClick={toggleVoice}
+            title={listening ? 'Stop recording' : 'Speak your notes'}
+          >
+            🎤
+          </button>
+        )}
+      </div>
       <div className="char-count">{notes.length} / 200</div>
 
       <button
