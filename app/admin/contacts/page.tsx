@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 const HOSPITALS   = ['SVHW', 'SVHA', 'SVHB'];
-const DEPARTMENTS = ['Nursing', 'Housekeeping', 'Maintenance'];
+const DEPARTMENTS = ['Nursing', 'Housekeeping', 'Maintenance', 'Billing', 'Diet'];
 const TYPES       = ['email', 'whatsapp'];
 
 const HOSPITAL_NAMES: Record<string, string> = {

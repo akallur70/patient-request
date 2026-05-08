@@ -3,6 +3,8 @@
   --green: #34a853;
   --orange: #f29900;
   --red: #ea4335;
+  --purple: #9c27b0;
+  --teal: #00897b;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -139,6 +141,14 @@ html, body {
 .dept-btn.selected-Maintenance  { border-color: var(--orange); background: #fff8e1; }
 .dept-btn.selected-Maintenance .dept-label,
 .dept-btn.selected-Maintenance .dept-label-mr { color: #e65100; }
+
+.dept-btn.selected-Billing { border-color: var(--purple); background: #f3e5f5; }
+.dept-btn.selected-Billing .dept-label,
+.dept-btn.selected-Billing .dept-label-mr { color: var(--purple); }
+
+.dept-btn.selected-Diet { border-color: var(--teal); background: #e0f2f1; }
+.dept-btn.selected-Diet .dept-label,
+.dept-btn.selected-Diet .dept-label-mr { color: var(--teal); }
 
 textarea {
   width: 100%;
