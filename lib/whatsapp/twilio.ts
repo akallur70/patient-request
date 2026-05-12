@@ -23,19 +23,13 @@ export async function send({ location, room, department, notes, recipients, requ
   ].filter(Boolean).join('\n');
 
   const promises = recipients.map(to => {
-    const payload: Record<string, unknown> = {
-      from: process.env.TWILIO_WHATSAPP_FROM,
-      to,
-    };
+    const base = { from: process.env.TWILIO_WHATSAPP_FROM as string, to };
 
-    if (includeButtons && requestId && process.env.TWILIO_CONTENT_SID) {
-      payload.contentSid = process.env.TWILIO_CONTENT_SID;
-      payload.contentVariables = JSON.stringify({ '1': messageText, '2': String(requestId) });
-    } else {
-      payload.body = messageText;
-    }
+    const params = (includeButtons && requestId && process.env.TWILIO_CONTENT_SID)
+      ? { ...base, contentSid: process.env.TWILIO_CONTENT_SID, contentVariables: JSON.stringify({ '1': messageText, '2': String(requestId) }) }
+      : { ...base, body: messageText };
 
-    return client.messages.create(payload)
+    return client.messages.create(params)
       .then(msg => console.log('WhatsApp sent:', msg.sid, { to, requestId }))
       .catch(err => console.error('WhatsApp error:', err.message, { to, requestId }));
   });
