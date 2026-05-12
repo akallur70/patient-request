@@ -5,8 +5,9 @@ import { getContacts, Location } from './routing';
 export interface AlertPayload {
   location: Location;
   room: string;
-  department: 'Nursing' | 'Housekeeping' | 'Maintenance';
+  department: string;
   notes: string | null;
+  requestId?: string;
 }
 
 export async function sendAlerts(payload: AlertPayload) {
@@ -30,7 +31,12 @@ export async function sendAlerts(payload: AlertPayload) {
 
   if (whatsappEnabled && whatsapp.length > 0) {
     tasks.push(
-      sendWhatsAppAlert({ ...payload, recipients: whatsapp }).catch(err =>
+      sendWhatsAppAlert({
+        ...payload,
+        recipients: whatsapp,
+        requestId: payload.requestId,
+        includeButtons: Boolean(payload.requestId),
+      }).catch(err =>
         console.error('WhatsApp alert failed:', err.message)
       )
     );

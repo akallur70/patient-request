@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import supabase from '../../../lib/supabase';
 import { sendAlerts } from '../../../lib/alerts';
+import { initializeRequestTracking } from '../../../lib/statusTracking';
+import { getContacts } from '../../../lib/routing';
 
 export async function POST(request: Request) {
   try {
@@ -14,20 +16,36 @@ export async function POST(request: Request) {
       );
     }
 
-    const { error } = await supabase
+    const { data: insertedRequest, error } = await supabase
       .from('patient_requests')
-      .insert([{ hospital, floor: floor || null, wing: wing || null, room, department, notes: notes || null }]);
+      .insert([{ hospital, floor: floor || null, wing: wing || null, room, department, notes: notes || null }])
+      .select('id')
+      .single();
 
     if (error) throw error;
+
+    const requestId = insertedRequest?.id;
 
     await sendAlerts({
       location: { hospital, floor: floor || null, wing: wing || null },
       room,
       department,
       notes: notes || null,
+      requestId,
     });
 
-    return NextResponse.json({ success: true });
+    // Initialise status tracking — assign to first WhatsApp contact
+    const { whatsapp } = await getContacts(
+      { hospital, floor: floor || null, wing: wing || null },
+      department
+    );
+    if (whatsapp.length > 0) {
+      await initializeRequestTracking(String(requestId), whatsapp[0]).catch(err =>
+        console.error('Tracking init failed:', err.message)
+      );
+    }
+
+    return NextResponse.json({ success: true, requestId });
 
   } catch (err: any) {
     return NextResponse.json(

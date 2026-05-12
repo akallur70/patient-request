@@ -22,21 +22,13 @@ export async function getContacts(
 ): Promise<{ emails: string[]; whatsapp: string[] }> {
   const { hospital, floor, wing } = location;
 
-  // Build an OR filter that matches any applicable scope level
-  // A row matches if:
-  //   its floor is null (hospital-wide) OR equals the request floor
-  //   its wing  is null (floor-wide)   OR equals the request wing
-  const floorFilter = floor ? `floor.is.null,floor.eq.${floor}` : 'floor.is.null';
-  const wingFilter  = wing  ? `wing.is.null,wing.eq.${wing}`   : 'wing.is.null';
-
+  // Fetch all contacts for this hospital/department
   const { data, error } = await supabase
     .from('routing_contacts')
-    .select('type, contact, name')
+    .select('type, contact, name, floor, wing')
     .eq('hospital', hospital)
     .eq('department', department)
-    .eq('active', true)
-    .or(floorFilter)
-    .or(wingFilter);
+    .eq('active', true);
 
   if (error) {
     console.error('routing_contacts query failed:', error.message);
@@ -46,9 +38,17 @@ export async function getContacts(
   const emails: string[]   = [];
   const whatsapp: string[] = [];
 
+  // Filter in code: include rows where:
+  // - floor is null (hospital-wide) OR floor matches
+  // - wing is null (floor-wide) OR wing matches
   for (const row of data ?? []) {
-    if (row.type === 'email')    emails.push(row.contact);
-    if (row.type === 'whatsapp') whatsapp.push(row.contact);
+    const floorMatches = row.floor === null || row.floor === floor;
+    const wingMatches = row.wing === null || row.wing === wing;
+
+    if (floorMatches && wingMatches) {
+      if (row.type === 'email')    emails.push(row.contact);
+      if (row.type === 'whatsapp') whatsapp.push(row.contact);
+    }
   }
 
   return { emails, whatsapp };

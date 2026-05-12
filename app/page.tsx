@@ -14,8 +14,8 @@ const HOSPITAL_NAMES: Record<string, string> = {
 
 const DEPARTMENTS: { id: Dept; icon: string; label: string; sub: string; labelMr: string; subMr: string }[] = [
   { id: 'Nursing',      icon: '👩‍⚕️', label: 'Nursing',      sub: 'Medicine, Vitals, Checkup etc.',  labelMr: 'नर्सिंग',       subMr: 'औषध, नाडी-ताप, तपासणी इ.' },
-  { id: 'Housekeeping', icon: '🧹',   label: 'Room Hygiene', sub: 'Linen, Cleaning, Toilet etc.',   labelMr: 'खोली स्वच्छता', subMr: 'चादर, साफसफाई, शौचालय इ.' },
-  { id: 'Maintenance',  icon: '🔧',   label: 'Room Comfort',          sub: 'TV, AC, Fan, Bed Remote etc.',                       labelMr: 'खोली सुविधा',   subMr: 'टीव्ही, एसी, पंखा, बेड रिमोट इ.' },
+  { id: 'Housekeeping', icon: '🧹',   label: 'Room Comfort',  sub: 'TV, AC, Fan, Bed Remote etc.',  labelMr: 'खोली सुविधा',   subMr: 'टीव्ही, एसी, पंखा, बेड रिमोट इ.' },
+  { id: 'Maintenance',  icon: '🔧',   label: 'Room Hygiene',  sub: 'Linen, Cleaning, Toilet etc.',  labelMr: 'खोली स्वच्छता', subMr: 'चादर, साफसफाई, शौचालय इ.' },
   { id: 'Billing',     icon: '💳',   label: 'Billing / Insurance',   sub: 'Billing queries, Insurance authorization etc.',      labelMr: 'बिलिंग / विमा', subMr: 'बिलिंग प्रश्न, विमा अधिकृतता इ.' },
   { id: 'Diet',        icon: '🥗',   label: 'Patient Diet & Nutrition', sub: 'Dietician, Food and Diet related etc.',           labelMr: 'आहार व पोषण',   subMr: 'आहारतज्ज्ञ, जेवण व आहार इ.' },
 ];
