@@ -101,7 +101,7 @@ export async function updateRequestStatus(
     status_to: statusTo,
     action_by: actionBy,
     action_type: actionType,
-    notes,
+    notes: notes ?? null,
   });
 
   return data;
