@@ -22,9 +22,11 @@ export async function POST(request: Request) {
       .select('id')
       .single();
 
+    console.log('insert result:', JSON.stringify({ data: insertedRequest, error }));
+
     if (error) throw error;
 
-    const requestId = insertedRequest?.id;
+    const requestId = insertedRequest?.id ?? null;
 
     await sendAlerts({
       location: { hospital, floor: floor || null, wing: wing || null },
@@ -39,10 +41,12 @@ export async function POST(request: Request) {
       { hospital, floor: floor || null, wing: wing || null },
       department
     );
-    if (whatsapp.length > 0) {
+    if (requestId && whatsapp.length > 0) {
       await initializeRequestTracking(String(requestId), whatsapp[0]).catch(err =>
         console.error('Tracking init failed:', err.message)
       );
+    } else {
+      console.log('Tracking skipped — requestId:', requestId, 'whatsapp contacts:', whatsapp.length);
     }
 
     return NextResponse.json({ success: true, requestId });
